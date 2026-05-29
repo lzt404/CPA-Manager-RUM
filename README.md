@@ -368,13 +368,8 @@ go run ./cmd/cpa-manager
 - Tagging `vX.Y.Z` triggers `.github/workflows/release.yml`.
 - The release workflow uploads `dist/management.html`, native packages, and `checksums.txt` to GitHub Releases.
 - Native packages are published for `linux`, `darwin`, and `windows` on both `amd64` and `arm64`, with the management panel embedded.
-- The same workflow builds `Dockerfile.usage-service` and pushes `seakee/cpa-manager`.
-- The Docker image is published for `linux/amd64` and `linux/arm64`.
-- The workflow syncs `README.md` to the Docker Hub overview.
+- Docker images are not published by this fork's release workflow.
 - The UI version shown on the System page is injected at build time, preferring `VERSION`, then git tag, then the `package.json` fallback.
-- Required GitHub secrets:
-  - `DOCKERHUB_USERNAME`
-  - `DOCKERHUB_TOKEN`
 
 Tip: opening `dist/index.html` via `file://` may be blocked by browser CORS; serving it with `npm run preview` or another static server is more reliable.
 
