@@ -6,6 +6,7 @@ version="${VERSION:-dev}"
 out_dir="${OUT_DIR:-"${repo_root}/dist/native"}"
 web_html="${WEB_HTML:-"${repo_root}/dist/index.html"}"
 binary_name="cpa-manager"
+asset_prefix="${ASSET_PREFIX:-cpa-manager-rum}"
 
 if [ ! -f "${web_html}" ]; then
   echo "missing ${web_html}; run npm run build first" >&2
@@ -33,7 +34,7 @@ targets=(
 
 for target in "${targets[@]}"; do
   read -r goos goarch <<<"${target}"
-  package_name="${binary_name}_${version}_${goos}_${goarch}"
+  package_name="${asset_prefix}_${goos}_${goarch}"
   package_dir="${work_dir}/${package_name}"
   exe_name="${binary_name}"
 
@@ -53,13 +54,12 @@ for target in "${targets[@]}"; do
 
   if [ "${goos}" = "windows" ]; then
     (
-      cd "${work_dir}"
-      zip -qr "${out_dir}/${package_name}.zip" "${package_name}"
+      cd "${package_dir}"
+      zip -qr "${out_dir}/${package_name}.zip" .
     )
   else
     (
-      cd "${work_dir}"
-      tar -czf "${out_dir}/${package_name}.tar.gz" "${package_name}"
+      tar -czf "${out_dir}/${package_name}.tar.gz" -C "${package_dir}" .
     )
   fi
 done
