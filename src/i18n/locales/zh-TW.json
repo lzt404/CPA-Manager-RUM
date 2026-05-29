@@ -1743,7 +1743,9 @@
           "title": "驗證設定",
           "description": "API 金鑰與驗證檔案目錄設定",
           "auth_dir": "驗證檔案目錄（auth-dir）",
-          "auth_dir_hint": "存放驗證檔案的目錄路徑（支援 ~）"
+          "auth_dir_hint": "存放驗證檔案的目錄路徑（支援 ~）",
+          "api_key_access_rules_title": "API Key 存取規則",
+          "api_key_access_rules_desc": "為客戶端 API Key 指定允許存取的驗證憑證與上游 API Key"
         },
         "system": {
           "title": "系統設定",
@@ -1865,6 +1867,18 @@
         "alias_placeholder": "例如 Alice / Team A",
         "alias_hint": "別名保存在 CPAM 資料庫中，按 API Key 雜湊關聯歷史請求。",
         "alias_action": "設定別名",
+        "access_action": "存取設定",
+        "access_title": "設定可存取憑證/API",
+        "access_hint": "透過上方選擇器新增允許存取的憑證/API；留空表示該 API Key 無法存取任何憑證或上游 API Key。",
+        "auth_index_select": "可選憑證",
+        "auth_index_select_placeholder": "選擇憑證 auth_index",
+        "auth_index_add": "新增到允許清單",
+        "auth_index_add_unused": "新增全部未被其他金鑰選擇的憑證",
+        "auth_index_add_all": "一鍵新增所有憑證和 API 提供商",
+        "auth_index_search_placeholder": "搜尋憑證",
+        "auth_index_search_empty": "沒有符合的憑證",
+        "auth_index_empty": "沒有偵測到可選憑證，請先在認證檔案或供應商設定中新增憑證。",
+        "auth_id_hint": "auth ID 是後端內部執行期 ID，通常不要手填；優先使用上方 auth_index 選擇器。",
         "alias_title": "設定 API Key 別名",
         "alias_saved": "API Key 別名已保存",
         "alias_deleted": "API Key 別名已刪除",
@@ -1877,6 +1891,21 @@
         "alias_error_duplicate": "別名已存在，請換一個唯一別名",
         "error_empty": "請輸入 API 金鑰",
         "error_invalid": "API 金鑰包含無效字元"
+      },
+      "api_key_access_rules": {
+        "label": "存取規則（api-key-access-rules）",
+        "add": "新增規則",
+        "empty": "暫無存取規則",
+        "hint": "客戶端 API Key 預設不能存取任何憑證/API，只有設定允許項後才能存取。",
+        "rule_title": "規則 #{{index}}",
+        "status_allowed": "允許 {{count}} 個憑證/API 項",
+        "status_denied": "未填寫允許項，將拒絕全部憑證/API",
+        "client_key": "客戶端 API Key",
+        "client_key_placeholder": "選擇或輸入客戶端 API Key",
+        "allowed_indexes": "允許的 auth_index",
+        "allowed_indexes_placeholder": "每行一個 auth_index",
+        "allowed_ids": "允許的內部 auth ID",
+        "allowed_ids_placeholder": "每行一個內部 auth ID"
       },
       "payload_rules": {
         "rule": "規則",

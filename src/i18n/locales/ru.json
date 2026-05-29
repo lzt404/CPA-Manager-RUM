@@ -1714,7 +1714,9 @@
           "title": "Настройки аутентификации",
           "description": "API-ключи и каталог аутентификации",
           "auth_dir": "Каталог auth-dir",
-          "auth_dir_hint": "Путь к каталогу с файлами аутентификации (поддерживает ~)"
+          "auth_dir_hint": "Путь к каталогу с файлами аутентификации (поддерживает ~)",
+          "api_key_access_rules_title": "Правила доступа API-ключей",
+          "api_key_access_rules_desc": "Ограничьте клиентские API-ключи выбранными credentials и upstream API-ключами"
         },
         "system": {
           "title": "Системные настройки",
@@ -1836,6 +1838,18 @@
         "alias_placeholder": "Например Alice / Team A",
         "alias_hint": "Псевдонимы сохраняются в базе CPAM и связываются с историей запросов по хэшу API-ключа.",
         "alias_action": "Задать псевдоним",
+        "access_action": "Доступ",
+        "access_title": "Настроить credentials/API",
+        "access_hint": "Используйте выбор выше, чтобы добавить доступные credentials/API. Если оставить пустым, этот API-ключ не сможет обращаться ни к каким credentials или upstream API-ключам.",
+        "auth_index_select": "Доступные credentials",
+        "auth_index_select_placeholder": "Выберите auth_index credential",
+        "auth_index_add": "Добавить в allow list",
+        "auth_index_add_unused": "Добавить все credentials, не выбранные другими ключами",
+        "auth_index_add_all": "Добавить все credentials и API-провайдеры",
+        "auth_index_search_placeholder": "Поиск credentials",
+        "auth_index_search_empty": "Подходящие credentials не найдены",
+        "auth_index_empty": "Доступные credentials не найдены. Сначала добавьте credentials в auth files или настройках провайдера.",
+        "auth_id_hint": "auth ID — внутренний runtime ID backend. Обычно не заполняйте его вручную; используйте выбор auth_index выше.",
         "alias_title": "Псевдоним API-ключа",
         "alias_saved": "Псевдоним API-ключа сохранён",
         "alias_deleted": "Псевдоним API-ключа удалён",
@@ -1848,6 +1862,21 @@
         "alias_error_duplicate": "Псевдоним уже существует. Используйте уникальный псевдоним.",
         "error_empty": "Введите API-ключ",
         "error_invalid": "API-ключ содержит недопустимые символы"
+      },
+      "api_key_access_rules": {
+        "label": "Правила доступа (api-key-access-rules)",
+        "add": "Добавить правило",
+        "empty": "Правил доступа нет",
+        "hint": "Клиентские API-ключи не получают доступ к credential/API, пока для них не настроены разрешённые элементы.",
+        "rule_title": "Правило #{{index}}",
+        "status_allowed": "Разрешено credential/API: {{count}}",
+        "status_denied": "Нет разрешённых элементов; доступ ко всем credential/API запрещён",
+        "client_key": "Клиентский API Key",
+        "client_key_placeholder": "Выберите или введите клиентский API Key",
+        "allowed_indexes": "Разрешённые auth_index",
+        "allowed_indexes_placeholder": "Один auth_index на строку",
+        "allowed_ids": "Разрешённые внутренние auth ID",
+        "allowed_ids_placeholder": "Один внутренний auth ID на строку"
       },
       "payload_rules": {
         "rule": "Правило",

@@ -28,6 +28,7 @@ import {
 } from '@/services/api/usageService';
 import {
   detectApiBaseFromLocation,
+  isDevFrontendBase,
   normalizeApiBase,
   resolveDefaultCPAConnectionBase,
 } from '@/utils/connection';
@@ -232,7 +233,9 @@ export function LoginPage() {
               ? detectedUsageServiceConfigured
                 ? detectedBase
                 : lastCPAForUsageService || defaultCPAConnectionBase
-              : storedBase || detectedBase
+              : storedBase && !isDevFrontendBase(storedBase)
+                ? storedBase
+                : defaultCPAConnectionBase
           );
           if (detectedUsageService && !detectedUsageServiceConfigured) {
             setShowCustomBase(true);

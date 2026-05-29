@@ -739,12 +739,110 @@
 
 .apiKeyModalInputRow {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   align-items: center;
 
   :global(.input) {
     flex: 1;
   }
+}
+
+.authIndexSelect {
+  flex: 0 0 320px;
+  width: 320px;
+  max-width: 320px;
+  min-width: 0;
+}
+
+.authIndexSelectDropdown {
+  width: min(320px, calc(100vw - 16px)) !important;
+}
+
+.authIndexSelectDropdown :global(button) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.authIndexPickerRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+.authIndexBulkButton {
+  flex: 1 1 100%;
+  width: fit-content;
+  max-width: 100%;
+  justify-content: flex-start;
+  white-space: normal;
+  text-align: left;
+}
+
+.allowedCredentialList {
+  display: grid;
+  gap: 8px;
+  max-height: 280px;
+  margin-bottom: 8px;
+  padding-right: 2px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.allowedCredentialItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+}
+
+.allowedCredentialMain {
+  min-width: 0;
+}
+
+.allowedCredentialTitle {
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.allowedCredentialMeta,
+.allowedCredentialEmpty {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.allowedCredentialMeta {
+  overflow: hidden;
+  margin-top: 2px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.allowedCredentialEmpty {
+  padding: 10px 12px;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+}
+
+.accessRuleStatus {
+  margin-top: 4px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 @media (max-width: 900px) {
@@ -759,6 +857,19 @@
   .apiKeyModalInputRow {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .authIndexPickerRow {
+    align-items: stretch;
+  }
+
+  .authIndexSelect {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .allowedCredentialItem {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .payloadRowActionButton {

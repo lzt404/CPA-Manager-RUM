@@ -25,6 +25,12 @@ export interface AuthPoolCleanConfig {
   sampleSize?: number;
 }
 
+export interface APIKeyAccessRuleConfig {
+  apiKey: string;
+  allowedAuthIndexes?: string[];
+  allowedAuthIds?: string[];
+}
+
 export interface Config {
   debug?: boolean;
   proxyUrl?: string;
@@ -40,6 +46,7 @@ export interface Config {
   forceModelPrefix?: boolean;
   routingStrategy?: string;
   apiKeys?: string[];
+  apiKeyAccessRules?: APIKeyAccessRuleConfig[];
   ampcode?: AmpcodeConfig;
   geminiApiKeys?: GeminiKeyConfig[];
   codexApiKeys?: ProviderKeyConfig[];
@@ -64,6 +71,7 @@ export type RawConfigSection =
   | 'force-model-prefix'
   | 'routing/strategy'
   | 'api-keys'
+  | 'api-key-access-rules'
   | 'ampcode'
   | 'gemini-api-key'
   | 'codex-api-key'

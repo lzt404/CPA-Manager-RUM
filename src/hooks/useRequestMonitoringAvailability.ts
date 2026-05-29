@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
+  buildUsageServiceBaseCandidates,
   isUsageServiceId,
-  normalizeUsageServiceBase,
   usageServiceApi,
 } from '@/services/api/usageService';
 import { useAuthStore, useUsageServiceStore } from '@/stores';
@@ -34,17 +34,11 @@ export function useRequestMonitoringAvailability(): RequestMonitoringAvailabilit
   });
 
   const candidates = useMemo(() => {
-    return Array.from(
-      new Set(
-        [
-          usageServiceEnabled && usageServiceBase ? usageServiceBase : '',
-          apiBase,
-          detectApiBaseFromLocation(),
-        ]
-          .map((value) => normalizeUsageServiceBase(value || ''))
-          .filter(Boolean)
-      )
-    );
+    return buildUsageServiceBaseCandidates([
+      usageServiceEnabled && usageServiceBase ? usageServiceBase : '',
+      apiBase,
+      detectApiBaseFromLocation(),
+    ]);
   }, [apiBase, usageServiceBase, usageServiceEnabled]);
 
   useEffect(() => {
@@ -74,7 +68,7 @@ export function useRequestMonitoringAvailability(): RequestMonitoringAvailabilit
           const collectorEnabled = response.config.collector?.enabled !== false;
           const hasCPAConnection = Boolean(
             response.config.cpaConnection?.cpaBaseUrl &&
-              response.config.cpaConnection?.managementKey
+            response.config.cpaConnection?.managementKey
           );
           if (cancelled) return;
           setState({

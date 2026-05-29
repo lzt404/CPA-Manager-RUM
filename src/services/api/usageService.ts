@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { UsagePayload } from '@/features/monitoring/hooks/useUsageData';
-import { normalizeApiBase } from '@/utils/connection';
+import { isLocalhost, normalizeApiBase } from '@/utils/connection';
 import type { ModelPrice } from '@/utils/usage';
 
 const USAGE_SERVICE_ERROR_CODES = new Set([
@@ -182,6 +182,7 @@ export interface UsageExportResponse {
 
 const USAGE_SERVICE_TIMEOUT_MS = 15 * 1000;
 const USAGE_SERVICE_TRANSFER_TIMEOUT_MS = 60 * 1000;
+export const DEFAULT_USAGE_SERVICE_PORT = 18317;
 export const USAGE_SERVICE_ID = 'cpa-manager';
 export const LEGACY_USAGE_SERVICE_ID = 'cpa-usage-service';
 export const USAGE_SERVICE_LAST_CPA_BASE_KEY = 'cpa-manager:last-cpa-base';
@@ -191,6 +192,36 @@ export const isUsageServiceId = (service?: string): boolean =>
   service === USAGE_SERVICE_ID || service === LEGACY_USAGE_SERVICE_ID;
 
 export const normalizeUsageServiceBase = (input: string): string => normalizeApiBase(input);
+
+export const buildUsageServiceBaseCandidates = (
+  bases: Array<string | false | null | undefined>
+): string[] => {
+  const candidates: string[] = [];
+  const seen = new Set<string>();
+
+  const addCandidate = (value: string | false | null | undefined) => {
+    const normalized = normalizeUsageServiceBase(value || '');
+    if (!normalized || seen.has(normalized)) return;
+    seen.add(normalized);
+    candidates.push(normalized);
+  };
+
+  bases.forEach((base) => {
+    addCandidate(base);
+    const normalized = normalizeUsageServiceBase(base || '');
+    if (!normalized) return;
+    try {
+      const parsed = new URL(normalized);
+      if (isLocalhost(parsed.hostname) && parsed.port !== String(DEFAULT_USAGE_SERVICE_PORT)) {
+        addCandidate(`${parsed.protocol}//${parsed.hostname}:${DEFAULT_USAGE_SERVICE_PORT}`);
+      }
+    } catch {
+      // Ignore malformed candidates; normalizeUsageServiceBase has already done the useful cleanup.
+    }
+  });
+
+  return candidates;
+};
 
 const buildUrl = (base: string, path: string): string => {
   const normalized = normalizeUsageServiceBase(base).replace(/\/+$/, '');

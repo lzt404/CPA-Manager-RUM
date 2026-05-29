@@ -41,7 +41,35 @@ export const resolveDefaultCPAConnectionBase = (options?: {
     return DEFAULT_DOCKER_CPA_BASE_URL;
   }
 
-  return normalizeApiBase(options?.currentBase || '');
+  const currentBase = normalizeApiBase(options?.currentBase || '');
+  try {
+    if (import.meta.env.DEV && currentBase) {
+      const parsed = new URL(currentBase);
+      if (isLocalhost(parsed.hostname) && parsed.port && parsed.port !== String(DEFAULT_API_PORT)) {
+        return normalizeApiBase(`${parsed.protocol}//${parsed.hostname}:${DEFAULT_API_PORT}`);
+      }
+    }
+  } catch {
+    return currentBase;
+  }
+
+  return currentBase;
+};
+
+export const isDevFrontendBase = (base: string): boolean => {
+  if (!import.meta.env.DEV) return false;
+  const normalized = normalizeApiBase(base);
+  if (!normalized) return false;
+  try {
+    const parsed = new URL(normalized);
+    return (
+      isLocalhost(parsed.hostname) &&
+      Boolean(parsed.port) &&
+      parsed.port !== String(DEFAULT_API_PORT)
+    );
+  } catch {
+    return false;
+  }
 };
 
 export const detectApiBaseFromLocation = (): string => {

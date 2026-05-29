@@ -1719,7 +1719,9 @@
           "title": "认证配置",
           "description": "API 密钥与认证文件目录设置",
           "auth_dir": "认证文件目录 (auth-dir)",
-          "auth_dir_hint": "存放认证文件的目录路径（支持 ~）"
+          "auth_dir_hint": "存放认证文件的目录路径（支持 ~）",
+          "api_key_access_rules_title": "API Key 访问规则",
+          "api_key_access_rules_desc": "为客户端 API Key 指定允许访问的认证凭证和上游 API Key"
         },
         "system": {
           "title": "系统配置",
@@ -1841,6 +1843,18 @@
         "alias_placeholder": "例如 Alice / Team A",
         "alias_hint": "别名保存在 CPAM 数据库中，按 API Key 哈希关联历史请求。",
         "alias_action": "设置别名",
+        "access_action": "访问设置",
+        "access_title": "设置可访问凭证/API",
+        "access_hint": "通过上面的选择框添加允许访问的凭证/API；留空表示该 API Key 无法访问任何凭证或上游 API Key。",
+        "auth_index_select": "可选凭证",
+        "auth_index_select_placeholder": "选择凭证 auth_index",
+        "auth_index_add": "添加到允许列表",
+        "auth_index_add_unused": "添加全部未被其他密钥选择的凭证",
+        "auth_index_add_all": "一键添加所有凭证和API提供商",
+        "auth_index_search_placeholder": "搜索凭证",
+        "auth_index_search_empty": "没有匹配的凭证",
+        "auth_index_empty": "没有检测到可选凭证，请先在认证文件或供应商配置中添加凭证。",
+        "auth_id_hint": "auth ID 是后端内部运行时 ID，通常不要手填；优先使用上面的 auth_index 选择框。",
         "alias_title": "设置 API Key 别名",
         "alias_saved": "API Key 别名已保存",
         "alias_deleted": "API Key 别名已删除",
@@ -1853,6 +1867,21 @@
         "alias_error_duplicate": "别名已存在，请换一个唯一别名",
         "error_empty": "请输入 API 密钥",
         "error_invalid": "API 密钥包含无效字符"
+      },
+      "api_key_access_rules": {
+        "label": "访问规则 (api-key-access-rules)",
+        "add": "添加规则",
+        "empty": "暂无访问规则",
+        "hint": "客户端 API Key 默认不能访问任何凭证/API，只有配置允许项后才能访问。",
+        "rule_title": "规则 #{{index}}",
+        "status_allowed": "允许 {{count}} 个凭证/API 项",
+        "status_denied": "未填写允许项，将拒绝全部凭证/API",
+        "client_key": "客户端 API Key",
+        "client_key_placeholder": "选择或输入客户端 API Key",
+        "allowed_indexes": "允许的 auth_index",
+        "allowed_indexes_placeholder": "每行一个 auth_index",
+        "allowed_ids": "允许的内部 auth ID",
+        "allowed_ids_placeholder": "每行一个内部 auth ID"
       },
       "payload_rules": {
         "rule": "规则",

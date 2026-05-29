@@ -11,7 +11,12 @@ import { obfuscatedStorage } from '@/services/storage/secureStorage';
 import { apiClient } from '@/services/api/client';
 import { useConfigStore } from './useConfigStore';
 import { useModelsStore } from './useModelsStore';
-import { detectApiBaseFromLocation, normalizeApiBase } from '@/utils/connection';
+import {
+  detectApiBaseFromLocation,
+  isDevFrontendBase,
+  normalizeApiBase,
+  resolveDefaultCPAConnectionBase,
+} from '@/utils/connection';
 
 interface AuthStoreState extends AuthState {
   connectionStatus: ConnectionStatus;
@@ -55,14 +60,19 @@ export const useAuthStore = create<AuthStoreState>()(
           const legacyKey = obfuscatedStorage.getItem<string>('managementKey');
 
           const { apiBase, managementKey, rememberPassword } = get();
-          const resolvedBase = normalizeApiBase(apiBase || legacyBase || detectApiBaseFromLocation());
+          const detectedBase = detectApiBaseFromLocation();
+          const defaultBase = resolveDefaultCPAConnectionBase({ currentBase: detectedBase });
+          const storedBase = normalizeApiBase(apiBase || legacyBase || '');
+          const resolvedBase =
+            storedBase && !isDevFrontendBase(storedBase) ? storedBase : defaultBase;
           const resolvedKey = managementKey || legacyKey || '';
-          const resolvedRememberPassword = rememberPassword || Boolean(managementKey) || Boolean(legacyKey);
+          const resolvedRememberPassword =
+            rememberPassword || Boolean(managementKey) || Boolean(legacyKey);
 
           set({
             apiBase: resolvedBase,
             managementKey: resolvedKey,
-            rememberPassword: resolvedRememberPassword
+            rememberPassword: resolvedRememberPassword,
           });
           apiClient.setConfig({ apiBase: resolvedBase, managementKey: resolvedKey });
 
@@ -71,7 +81,7 @@ export const useAuthStore = create<AuthStoreState>()(
               await get().login({
                 apiBase: resolvedBase,
                 managementKey: resolvedKey,
-                rememberPassword: resolvedRememberPassword
+                rememberPassword: resolvedRememberPassword,
               });
               return true;
             } catch (error) {
@@ -99,7 +109,7 @@ export const useAuthStore = create<AuthStoreState>()(
           // 配置 API 客户端
           apiClient.setConfig({
             apiBase,
-            managementKey
+            managementKey,
           });
 
           // 测试连接 - 获取配置
@@ -112,7 +122,7 @@ export const useAuthStore = create<AuthStoreState>()(
             managementKey,
             rememberPassword,
             connectionStatus: 'connected',
-            connectionError: null
+            connectionError: null,
           });
           if (rememberPassword) {
             localStorage.setItem('isLoggedIn', 'true');
@@ -128,7 +138,7 @@ export const useAuthStore = create<AuthStoreState>()(
                 : 'Connection failed';
           set({
             connectionStatus: 'error',
-            connectionError: message || 'Connection failed'
+            connectionError: message || 'Connection failed',
           });
           throw error;
         }
@@ -146,7 +156,7 @@ export const useAuthStore = create<AuthStoreState>()(
           serverVersion: null,
           serverBuildDate: null,
           connectionStatus: 'disconnected',
-          connectionError: null
+          connectionError: null,
         });
         localStorage.removeItem('isLoggedIn');
       },
@@ -168,14 +178,14 @@ export const useAuthStore = create<AuthStoreState>()(
 
           set({
             isAuthenticated: true,
-            connectionStatus: 'connected'
+            connectionStatus: 'connected',
           });
 
           return true;
         } catch {
           set({
             isAuthenticated: false,
-            connectionStatus: 'error'
+            connectionStatus: 'error',
           });
           return false;
         }
@@ -190,9 +200,9 @@ export const useAuthStore = create<AuthStoreState>()(
       updateConnectionStatus: (status, error = null) => {
         set({
           connectionStatus: status,
-          connectionError: error
+          connectionError: error,
         });
-      }
+      },
     }),
     {
       name: STORAGE_KEY_AUTH,
@@ -206,15 +216,15 @@ export const useAuthStore = create<AuthStoreState>()(
         },
         removeItem: (name) => {
           obfuscatedStorage.removeItem(name);
-        }
+        },
       })),
       partialize: (state) => ({
         apiBase: state.apiBase,
         ...(state.rememberPassword ? { managementKey: state.managementKey } : {}),
         rememberPassword: state.rememberPassword,
         serverVersion: state.serverVersion,
-        serverBuildDate: state.serverBuildDate
-      })
+        serverBuildDate: state.serverBuildDate,
+      }),
     }
   )
 );
@@ -225,11 +235,8 @@ if (typeof window !== 'undefined') {
     useAuthStore.getState().logout();
   });
 
-  window.addEventListener(
-    'server-version-update',
-    ((e: CustomEvent) => {
-      const detail = e.detail || {};
-      useAuthStore.getState().updateServerVersion(detail.version || null, detail.buildDate || null);
-    }) as EventListener
-  );
+  window.addEventListener('server-version-update', ((e: CustomEvent) => {
+    const detail = e.detail || {};
+    useAuthStore.getState().updateServerVersion(detail.version || null, detail.buildDate || null);
+  }) as EventListener);
 }

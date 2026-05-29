@@ -1719,7 +1719,9 @@
           "title": "Authentication Configuration",
           "description": "API keys and authentication directory settings",
           "auth_dir": "Auth Directory (auth-dir)",
-          "auth_dir_hint": "Directory path for authentication files (supports ~)"
+          "auth_dir_hint": "Directory path for authentication files (supports ~)",
+          "api_key_access_rules_title": "API Key Access Rules",
+          "api_key_access_rules_desc": "Limit each client API key to specific auth credentials and upstream API keys"
         },
         "system": {
           "title": "System Configuration",
@@ -1841,6 +1843,18 @@
         "alias_placeholder": "e.g. Alice / Team A",
         "alias_hint": "Aliases are saved in the CPAM database and linked to historical requests by API key hash.",
         "alias_action": "Set Alias",
+        "access_action": "Access",
+        "access_title": "Set Accessible Credentials/APIs",
+        "access_hint": "Use the picker above to add accessible credentials/APIs. Leaving this empty means this API key cannot access any credential or upstream API key.",
+        "auth_index_select": "Available Credentials",
+        "auth_index_select_placeholder": "Select credential auth_index",
+        "auth_index_add": "Add to Allow List",
+        "auth_index_add_unused": "Add all credentials not selected by other keys",
+        "auth_index_add_all": "Add all credentials and API providers",
+        "auth_index_search_placeholder": "Search credentials",
+        "auth_index_search_empty": "No matching credentials",
+        "auth_index_empty": "No selectable credentials were detected. Add credentials under auth files or provider configuration first.",
+        "auth_id_hint": "auth ID is an internal runtime ID. Usually do not fill it manually; use the auth_index picker above.",
         "alias_title": "Set API Key Alias",
         "alias_saved": "API key alias saved",
         "alias_deleted": "API key alias deleted",
@@ -1853,6 +1867,21 @@
         "alias_error_duplicate": "Alias already exists. Use a unique alias.",
         "error_empty": "Please enter an API key",
         "error_invalid": "API key contains invalid characters"
+      },
+      "api_key_access_rules": {
+        "label": "Access Rules (api-key-access-rules)",
+        "add": "Add Rule",
+        "empty": "No access rules",
+        "hint": "Client API keys cannot access credentials/APIs until allowed entries are configured for that key.",
+        "rule_title": "Rule #{{index}}",
+        "status_allowed": "Allows {{count}} credential/API entries",
+        "status_denied": "No allowed entries; denies all credentials/APIs",
+        "client_key": "Client API Key",
+        "client_key_placeholder": "Select or enter a client API key",
+        "allowed_indexes": "Allowed auth_index",
+        "allowed_indexes_placeholder": "One auth_index per line",
+        "allowed_ids": "Allowed internal auth ID",
+        "allowed_ids_placeholder": "One internal auth ID per line"
       },
       "payload_rules": {
         "rule": "Rule",

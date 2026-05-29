@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  buildUsageServiceBaseCandidates,
   isUsageServiceId,
-  normalizeUsageServiceBase,
   usageServiceApi,
   type ApiKeyAlias,
   type ApiKeyAliasesResponse,
@@ -165,13 +165,7 @@ export function useUsageData(
       return usageServiceBase;
     }
 
-    const candidates = Array.from(
-      new Set(
-        [apiBase, detectApiBaseFromLocation()]
-          .map((value) => normalizeUsageServiceBase(value || ''))
-          .filter(Boolean)
-      )
-    );
+    const candidates = buildUsageServiceBaseCandidates([apiBase, detectApiBaseFromLocation()]);
 
     for (const candidate of candidates) {
       try {
@@ -340,11 +334,7 @@ export function useUsageData(
         throw error;
       }
     },
-    [
-      managementKey,
-      usagePageQueries,
-      usageQuery,
-    ]
+    [managementKey, usagePageQueries, usageQuery]
   );
 
   const loadApiKeyAliases = useCallback(async () => {
@@ -395,12 +385,7 @@ export function useUsageData(
         }
       }
     },
-    [
-      loadUsagePages,
-      managementKey,
-      resolveUsageServiceBase,
-      usageQuery,
-    ]
+    [loadUsagePages, managementKey, resolveUsageServiceBase, usageQuery]
   );
 
   useEffect(() => {
